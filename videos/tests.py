@@ -6,6 +6,7 @@ from django.urls import reverse
 from faker import Factory
 
 from .models import Video
+from profiles.models import UserHistory
 
 # Create your tests here.
 
@@ -110,9 +111,22 @@ class VideoTests(TestCase):
             kwargs={'youtube_id': random_youtube_id}))
         self.assertEqual(resp.status_code, 400)
 
+    def test_popular_videos_url_exists(self):
+        resp = self.client.get(reverse('videos:popular'))
+        self.assertEqual(resp.status_code, 200)
     
+    def test_history_videos_url_exists(self):
+        login = self.client.login(username='test_user', password='123456')
+        resp = self.client.get(reverse('videos:history'))
+        self.assertEqual(resp.status_code, 200)
 
-
+    def test_history_videos_add_history(self):
+        video = Video.objects.first()
+        login = self.client.login(username='test_user', password='123456')
+        resp = self.client.get(reverse(
+            'videos:detail', 
+            kwargs={'slug': video.slug}))
+        self.assertTrue(video.userhistory_set.filter(user__username="test_user").exists())
 
 
         

@@ -27,6 +27,8 @@ class VideoHistory(ListView):
         if not request.user.is_anonymous:
             user = request.user
             history = UserHistory.objects.get(user=user)
+        else:
+            raise Http404("Please log in")            
 
         self.object_list = self.get_queryset().filter(pk__in=history.history.all())
         allow_empty = self.get_allow_empty()
@@ -159,8 +161,10 @@ def dislike_video(request, youtube_id):
     print("dislike a video")
     user_logged=request.user
 
-    video=Video.objects.filter(youtube_id=youtube_id, active=True)[0]
+    video=Video.objects.filter(youtube_id=youtube_id, active=True).first()
     
+    if not video:
+        return JsonResponse({'error': 'invalid video id'}, status=400)
 
     video.dislikes.add(user_logged)
 

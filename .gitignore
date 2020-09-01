@@ -36,6 +36,7 @@ __pycache__/
 .Python
 env/
 build/
+static/
 develop-eggs/
 dist/
 downloads/
@@ -45,7 +46,6 @@ lib64/
 parts/
 sdist/
 var/
-static/
 *.egg-info/
 .installed.cfg
 *.egg
