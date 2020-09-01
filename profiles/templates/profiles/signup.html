@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+
+{% block container %}
+	{% if error %}
+		<p class="alert alert-danger">{{ error }}</p>
+	{% endif%}
+	<form id="register-form" method="POST" action="{% url "profiles:signup" %}">
+		{% csrf_token %}
+
+		{{form.as_p}}
+		
+		<button type="submit" class="btn btn-primary btn-block mt-5">
+			Sign up!
+		</button>
+
+	</form>
+
+{% endblock container %}
